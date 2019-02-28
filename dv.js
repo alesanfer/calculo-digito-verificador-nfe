@@ -43,6 +43,3 @@ function geraDv() {
 window.onload = function () {
     document.getElementById('frmChave').addEventListener('submit', stopDefAction, false);
 };
-
-
-// console.log(gerarChaveDeAcessoNfe("3517081835539700010855001000123051100123051"));
