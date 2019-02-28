@@ -1,30 +1,35 @@
 function stopDefAction(evt) { evt.preventDefault(); }
+
+/**
+ * 
+ * @param {*} chaveSemDigito 
+ */
 function gerarChaveDeAcessoNfe(chaveSemDigito) {
+    let dv;
+
     if (chaveSemDigito.length != 43) {
-        // alert("A chave informada possui : " + chaveSemDigito.length + " dígitos");
         let msg = document.getElementById("msgChave");
         msg.innerHTML = "A chave informada deve ter 43 dígitos";
-
+        return;
     };
-    let aux = new Array();
-    let variavel = 2;
-    let total = 0;
-    let dv = 0;
-    for (let i = aux.length - 1; i >= 0; i--) {
-        aux[i] = Integer.parseInt("" + chaveSemDigito.charAt(i));
-        aux[i] = aux[i] * variavel;
-        variavel++;
-        if (variavel > 9)
-            variavel = 2;
-        total += aux[i];
-    }
-    if (total == 0 || total == 1)
-        dv = 0;
-    else
-        dv = 11 - (total % 11);
-    chaveFinal = (chaveSemDigito + dv);
 
-    return {chaveFinal: chaveFinal, dv:dv};
+    let multiplicadores = [2, 3, 4, 5, 6, 7, 8, 9];
+    let i = 42;
+    let soma = 0;
+    let resto = 0;
+
+    while (i >= 0) {
+        for (m = 0; m < multiplicadores.length && i >= 0; m++) {
+            soma += parseInt(chaveSemDigito[i]) * multiplicadores[m];
+            i--;
+        }
+    }
+
+    resto = soma % 11;
+
+    if (resto == 0 || resto == 1) { dv = 0; } else { dv = 11 - resto; }
+
+    return { chaveFinal: chaveSemDigito + dv, dv: dv };
 }
 function geraDv() {
     let ret = gerarChaveDeAcessoNfe(document.getElementById('inputChaveSemDigito').value);
